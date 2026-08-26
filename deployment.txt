@@ -1,0 +1,52 @@
+Docker Files => Har microservice ka Docker image banata hai
+
+ECR Docker => Images ko AWS mein store karta hai
+
+ECS Docker => Containers/Tasks ko run aur manage karta hai
+
+ECS Cluster => Multiple services/tasks ko logically organize karta hai
+
+VPC => AWS ke andar tumhara private network
+
+Subnets => VPC ke andar resources ko different network zones mein rakhte hain
+
+Security Group => Kaun kis port/service ko access kar sakta hai, control karta hai
+
+ALB => Internet se incoming request receive karke ECS service tak bhejta hai
+
+Target Group => ALB ko batata hai request kis ECS task/container ko bhejni hai
+
+Gateway => /api/auth, /api/resume, /api/interview, /api/billing ko respective microservice par route karta hai
+
+
+Deployment
+│
+▼
+Docker Files
+│
+├── docker build
+│
+▼
+Docker Images
+│
+├── docker push
+│
+▼
+AWS ECR
+│
+├── pull image
+│
+▼
+ECS Cluster
+│
+├── Gateway Task
+├── Auth Task
+├── Chat Task
+├── Agent Task
+└── Billing Task
+
+
+
+
+
+
