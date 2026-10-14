@@ -1,373 +1,231 @@
-
 <div align="center">
-      <img width="226" alt="image" src="https://github.com/pattjoshi/Fresher-Multi-Agent-AI-/blob/master/frontend/public/logo.png">
+  <img width="226" alt="Fresher.AI Logo" src="https://github.com/pattjoshi/Fresher-Multi-Agent-AI-/blob/master/frontend/public/logo.png">
 
-##  Fresher AI 
+  # Fresher.AI
+  ### Intelligent End-to-End Career Acceleration Platform for Freshers & Early Professionals
 
-
-FresherAI is an intelligent career growth platform built for freshers and early-career professionals. It combines AI-powered resume optimization, interview preparation, personalized learning roadmaps, analytics, and secure user access into one unified experience. The platform is designed to help users improve their resume, practice real-world interviews, get actionable feedback, and build a clear learning path toward their desired job roles and salary targets.
-
+  <p align="center">
+    <b>AI Resume Optimization</b> • <b>ATS Job-Fit Analysis</b> • <b>AI Cover Letter Generator</b> • <b>AI Career Coach</b> • <b>Mock Interviews</b> • <b>Personalized Roadmaps</b>
+  </p>
 </div>
 
-<h3 ><a href="https://github.com/pattjoshi/Fresher-Multi-Agent-AI-/tree/master#screenshot">Click to move screenshot  section </a></h3>
+---
 
+## 📌 Overview
 
-## Why FresherAI
+**Fresher.AI** is an all-in-one AI-driven career growth ecosystem engineered to solve the hardest challenges freshers face in the hiring market. From crafting ATS-optimized resumes and tailored cover letters to practicing voice/video mock interviews and getting 24/7 personalized mentorship from an AI Career Coach, Fresher.AI equips candidates with everything needed to land their dream software engineering roles.
 
-Most job seekers struggle with three major problems:
+---
 
-- creating an ATS-friendly resume that stands out
-- practicing interviews without structured feedback
-- not knowing what to learn next to reach a target role or package
+## 🚀 Key Feature Suite
 
-FresherAI addresses all three by combining multiple AI agents and services into a single career preparation platform.
+### 1. 🤖 AI Career Coach Chatbot (`/career-coach`) *(New)*
+- **Resume-Aware Intelligence:** Automatically accesses the candidate's uploaded resume to provide personalized, non-generic career guidance.
+- **24/7 Fresher Mentorship:** Tailored advice on off-campus hiring cycles in India, standout portfolio projects, salary negotiation tactics, and HR answer framing.
+- **Interactive Chat Experience:** Clean Black & White UI with 1-click prompt chips, clipboard copy, live resume status indicator, and sliding conversational memory powered by **Groq LLM** & **LangChain**.
+- **Free Mentor Feature:** Zero coin cost for continuous guidance and high student retention.
 
-## Key Features
+### 2. ✉️ AI Cover Letter Generator (`/cover-letter`) *(New)*
+- **Job-Specific Tailoring:** Cross-references the candidate's resume with any pasted Job Description (JD).
+- **ATS Keyword Alignment:** Naturally integrates essential JD keywords and requirements into high-converting 3-4 paragraph letters.
+- **Persistent History & Caching:** Saves generated letters to MongoDB with high-speed Redis caching (`GET /api/resume/cover-letter`).
+- **1-Click Clipboard Export:** Instant copy to clipboard with formatting preserved.
 
-### 1. AI Resume Builder
+### 3. 🎯 Job-Fit Analysis & ATS Gap Scorer (`/job-fit`)
+- **Compatibility Score:** Calculates a precise match percentage against any job description.
+- **Skill Gap Analysis:** Pinpoints exact missing keywords, skills, and experience criteria.
+- **Actionable Optimization:** Provides tailored recommendations to boost resume match rates before applying.
 
-- Create and edit professional resumes step by step
-- Add personal details, summary, skills, work experience, projects, and education
-- Preview resume content before finalizing
-- Build ATS-friendly resumes tailored for job applications
-- Save and manage resume data for future use
+### 4. 📄 AI Resume Builder & ATS Scorer (`/resume`, `/scorer`)
+- **Step-by-Step Builder:** Guided multi-step creation for contact info, summary, technical skills, work experience, projects, and education.
+- **Live ATS Preview:** Real-time formatting preview with responsive scaling.
+- **Instant ATS Scoring:** Evaluates uploaded PDF resumes for ATS readability and impact.
 
-### 2. AI Interview Preparation
+### 5. 🎙️ AI Mock Interview Simulation (`/interview`)
+- **Multi-Track Interviews:** Simulations for HR, Technical, and Coding rounds.
+- **Voice Recognition & Speech Synthesis:** Interactive voice-to-text answers and realistic AI voice question prompts.
+- **Integrated Code Editor:** Real-time coding workspace with timer constraints.
+- **Comprehensive Scorecards:** Post-interview breakdown of technical depth, communication clarity, and granular question-by-question feedback.
 
-- Simulate interview sessions with AI-driven questions
-- Support for technical, HR, and coding interview workflows
-- Real-time interview flow with an interactive coding/editor experience
-- Track interview history and performance trends
-- View detailed scoring reports after each session
-- Measure performance across technical and HR dimensions
+### 6. 🗺️ Personalized Learning Roadmap Generator (`/roadmap`)
+- **Target Role Roadmaps:** Custom learning paths tailored to specific targets (Frontend, Backend, Full Stack, ML, DevOps) and target CTC goals.
+- **Milestone-Based Learning:** Structured checkpoints with curated study topics and practice tasks.
+- **Resume Context Integration:** Skips concepts the candidate already knows and focuses on bridging their skill gaps.
 
-### 3. Interview Feedback and Analytics
+### 7. 📊 Performance Dashboard & Career Growth Accelerators (`/dashboard`)
+- **Centralized Metrics:** Total interviews taken, questions answered, completion rate, and average performance score.
+- **Historical Performance Graph:** Visual trend breakdown across technical and HR evaluations.
+- **🚀 AI Accelerators Suite:** Interactive quick-access cards for AI Career Coach, Cover Letter Generator, and Job Fit Analysis featuring smooth hover-black animations and glass sheen effects.
 
-- Generate performance insights after each interview
-- Review answer quality and evaluation structure
-- Track total interviews, total questions attempted, completion rate, and average score
-- Monitor user progress over time with visual analytics dashboards
-- Analyze strengths and identify weak areas for improvement
+### 8. 🪙 Coin Economy & Razorpay Billing (`/pricing`)
+- **Usage-Based Monetization:** Seamless coin-based deductions for compute-heavy AI operations.
+- **Razorpay Payment Gateway:** Secure purchasing of coin packs.
 
-### 4. Personalized AI Roadmap Generator
+---
 
-- Create a roadmap for a target role such as Frontend Developer, Backend Engineer, or ML Engineer
-- Generate learning paths customized to user goals and salary expectations
-- Use a resume-based context when available
-- Build focused, actionable study plans to improve skills systematically
-- Access roadmap history and previously generated plans
+## 🏗️ Architecture & System Design
 
-### 5. Career Dashboard
-
-- Centralized overview of interview performance
-- Visual metrics and charts for interview stats
-- Quick navigation to resume, interview, roadmap, and billing modules
-- User-specific dashboard experience after login
-
-### 6. User Authentication and Access Control
-
-- Secure login and user session handling
-- Firebase-powered authentication
-- Protected routes for application features
-- Logout and session-based access management
-
-### 7. Subscription and Billing
-
-- Razorpay-powered billing integrations
-- Plans and premium feature access
-- User coin-based activity tracking for AI features
-- Monetization support for premium career features
-
-### 8. Multi-Service Backend Architecture
-
-- Gateway service for request routing and proxying
-- Independent backend services for auth, resume, interview, roadmap, and billing
-- Modular architecture for easier scaling and maintenance
-- Shared Redis integration for caching and fast access
-
-
-## screenshot   
-
-
-<table>
-  <tr>
-    <td><img width="960" alt="image" src="https://github.com/user-attachments/assets/cfaf8423-a167-4f3d-9715-1252eadd7e04" alt="mockup"/></td>
-    <td><<img width="960" alt="image" src="https://github.com/user-attachments/assets/e6d3ff96-7ade-4078-a04f-b45412d5cfdd" alt="mockup"/></td>
-  </tr>
-  <tr>
-    <td><img width="960" alt="image" src="https://github.com/user-attachments/assets/7024f6a2-4a20-4277-93c0-cd3b58fc8876"alt="mockup"/></td>
-    <td><img width="960" alt="image" src="https://github.com/user-attachments/assets/0901e260-c376-4c8f-8b07-b0f1ef98d730"alt="mockup"/></td>
-  </tr>
-</table>
-
-
-## Project Architecture
-
-The application uses a modular microservice-style backend with a React frontend.
-
-- Frontend: React + Vite
-- Backend: Node.js + Express
-- Service routing: API Gateway
-- Database: MongoDB
-- Caching: Redis
-- Authentication: Firebase + secure backend sessions
-- Payments: Razorpay
-- Containerization: Docker
-
-## System Overview
+Fresher.AI operates on a high-throughput, modular **Microservices Architecture** coordinated by an API Gateway:
 
 ```text
-Frontend (React + Vite)
-        |
-        v
-API Gateway (Express)
-  |  |  |  |  |
-  v  v  v  v  v
-Auth Resume Interview Roadmap Billing
-  |      |       |        |
-  v      v       v        v
-MongoDB MongoDB MongoDB MongoDB
-  |
-  v
-Redis
+                        ┌─────────────────────────────────────┐
+                        │      Frontend (React + Vite)        │
+                        └──────────────────┬──────────────────┘
+                                           │ HTTP / Cookies
+                                           ▼
+                        ┌─────────────────────────────────────┐
+                        │      API Gateway (Express :5000)    │
+                        └──────┬──────────┬──────────┬────────┘
+                               │          │          │
+         ┌─────────────────────┼──────────┴──────────┼─────────────────────┐
+         ▼                     ▼                     ▼                     ▼
+┌──────────────────┐  ┌──────────────────┐  ┌──────────────────┐  ┌──────────────────┐
+│   Auth Service   │  │  Resume Service  │  │Interview Service │  │ Roadmap Service  │
+│     (:5001)      │  │     (:5002)      │  │     (:5003)      │  │     (:5004)      │
+└────────┬─────────┘  └────────┬─────────┘  └────────┬─────────┘  └────────┬─────────┘
+         │                     │                     │                     │
+         ▼                     ▼                     ▼                     ▼
+┌──────────────────┐  ┌──────────────────┐  ┌──────────────────┐  ┌──────────────────┐
+│   MongoDB Auth   │  │  MongoDB Resume  │  │ MongoDB Interview│  │ MongoDB Roadmap  │
+└──────────────────┘  └────────┬─────────┘  └────────┬─────────┘  └──────────────────┘
+                               │                     │
+                               └──────────┬──────────┘
+                                          ▼
+                               ┌─────────────────────┐
+                               │  Shared Redis Cache │
+                               │       (:6379)       │
+                               └─────────────────────┘
 ```
 
-## Tech Stack
+---
 
-### Frontend
+## 💻 Tech Stack
 
-- React
-- Vite
-- JavaScript / JSX
-- Tailwind-inspired styling
-- Motion UI animations
-- React Router
-- Redux Toolkit
-- Firebase client configuration
-- Axios for API calls
+| Domain | Technologies |
+|---|---|
+| **Frontend** | React 19, Vite, Tailwind CSS, Motion (Framer Motion), Redux Toolkit, React Router, Axios, React Icons, Recharts |
+| **Backend Services** | Node.js, Express.js 5, express-http-proxy, Mongoose, Multer, cookie-parser, morgan |
+| **AI & LLM Orchestration** | LangChain Core, LangChain Groq, Google Generative AI, pdf-parse |
+| **Databases & Cache** | MongoDB Atlas, Redis (Shared Distributed Cache) |
+| **Authentication & Payments** | JWT / Cookies, Firebase Authentication, Razorpay SDK |
+| **DevOps & Tooling** | Docker, Docker Compose, Git |
 
-### Backend
+---
 
-- Node.js
-- Express.js
-- MongoDB with Mongoose
-- Redis
-- dotenv configuration
-- Firebase Admin SDK
-- Razorpay SDK
-
-### DevOps and Utilities
-
-- Docker
-- Docker Compose
-- Node package management
-- Environment-based configuration
-
-## Application Modules
-
-### Landing Page
-
-The app starts with a polished landing page that introduces the product and highlights its AI-driven job preparation tools.
-
-### Dashboard
-
-Users get a performance dashboard displaying:
-
-- total interviews created
-- total questions answered
-- completed interviews
-- average score
-- historical interview charts
-
-### Resume Builder
-
-The resume module helps users build a structured resume in multiple sections, including:
-
-- profile summary
-- skills
-- experience
-- projects
-- education
-
-### Interview Module
-
-The interview feature supports a guided flow where users can:
-
-- start a session
-- answer AI-generated interview questions
-- proceed through multiple stages of interview practice
-- receive automated scoring and evaluation reports
-
-### Roadmap Builder
-
-Users can define a target role and package and receive a personalized roadmap that helps them learn the right skills in the correct order.
-
-### Billing Module
-
-The billing module supports premium access and key subscription-related flows through Razorpay.
-
-## Core Workflow
-
-1. User signs in using Firebase-based authentication.
-2. User creates or updates a resume profile.
-3. User practices interview sessions with AI assistance.
-4. The platform evaluates responses and generates analytics.
-5. User generates a customized roadmap based on goals and salary target.
-6. User can access premium features and billing options when needed.
-
-## Project Structure
+## 📂 Repository Structure
 
 ```text
-fresherAI/
+Fresher_AI/
+├── .gitignore                      # Monorepo gitignore (secrets, uploads, builds)
+├── README.md                       # Complete platform documentation
+├── APPLICATION_OVERVIEW.md         # Architecture and design notes
+├── future-planning.md              # Long-term feature roadmap
+│
 ├── backend/
-│   ├── gateway/
-│   ├── services/
-│   ├── shared/
-│   ├── docker-compose.yml
-│   ├── package.json
-│   └── .dockerignore
-├── frontend/
-│   ├── src/
-│   ├── public/
-│   ├── package.json
-│   ├── vite.config.js
-│   └── README.md
-├── .gitignore
-├── README.md
-├── professional.md
-└── deployment.txt
+│   ├── docker-compose.yml          # Container configuration (Redis, etc.)
+│   ├── gateway1/                   # Reverse proxy & auth routing gateway (:5000)
+│   ├── shared/                     # Shared utilities & Redis client
+│   └── services/
+│       ├── auth-service1/          # User authentication & profile management (:5001)
+│       ├── resume-service1/        # Resume Builder, Scorer, Job-Fit, Cover Letter, Career Coach (:5002)
+│       │   ├── agents/             # LangChain agents (careerCoach, coverLetter, jobFit)
+│       │   ├── controllers/        # Service controllers
+│       │   ├── model/              # MongoDB schemas (Resume, JobFit, CoverLetter)
+│       │   └── routes/             # Resume & Career service routes
+│       ├── interview-service1/     # AI Mock Interview engine & question evaluation (:5003)
+│       ├── roadmap-service1/       # Personalized learning roadmap generator (:5004)
+│       └── billing-service1/       # Razorpay coin packs & transaction management (:5005)
+│
+└── frontend/                       # React + Vite client application
+    ├── src/
+    │   ├── api/                    # Axios API service clients (resume.api, interview.api, etc.)
+    │   ├── components/             # Reusable UI components (Sidebar, StatBox, LoginModal, etc.)
+    │   ├── pages/                  # Route views:
+    │   │   ├── Home.jsx            # Landing page with 6-Agent Ecosystem showcase
+    │   │   ├── Dashbord.jsx        # Performance metrics & Career Growth Tools
+    │   │   ├── CareerCoach.jsx     # AI Career Coach chat interface (New)
+    │   │   ├── CoverLetter.jsx     # AI Cover Letter Generator & History (New)
+    │   │   ├── JobFit.jsx          # Resume-to-JD match analysis
+    │   │   ├── Scorer.jsx          # ATS score analyzer
+    │   │   ├── ResumeBuilder.jsx   # Interactive resume builder
+    │   │   ├── InterviewPage.jsx   # Live mock interview workspace
+    │   │   └── Roadmap.jsx         # Custom milestone learning roadmap
+    │   ├── redux/                  # Redux slices for resume and user state
+    │   └── utils/                  # Axios interceptors and helper utilities
+    ├── package.json
+    └── vite.config.js
 ```
 
-## Environment Configuration
+---
 
-The project relies heavily on environment variables for service connectivity and secrets.
-
-Typical configuration includes:
-
-- backend gateway URL and service URLs
-- MongoDB connection strings
-- Redis URL
-- Firebase configuration values
-- Razorpay keys
-- AI provider API keys
-- frontend backend URL
-
-Important: never commit `.env` files to GitHub. Keep all secrets secure.
-
-## Local Setup
+## ⚡ Local Development Setup
 
 ### Prerequisites
+- [Node.js (v18+)](https://nodejs.org/)
+- [Docker Desktop](https://www.docker.com/) (for Redis)
+- [MongoDB](https://www.mongodb.com/) (Local or Atlas URI)
+- Groq Cloud API Key & Google Gemini API Key
 
-- Node.js 18+
-- npm
-- Docker Desktop
-- MongoDB
-- Firebase project
-- Razorpay account
-- Required AI API keys
-
-### 1. Clone the project
-
+### 1. Clone the Repository
 ```bash
-git clone <repository-url>
-cd fresherAI
+git clone https://github.com/hanwate-darshan/Fresher_AI.git
+cd Fresher_AI
 ```
 
-### 2. Start Redis
-
+### 2. Start Shared Redis Cache
 ```bash
 cd backend
 docker compose up -d
+cd ..
 ```
 
-### 3. Install backend dependencies
+### 3. Configure Environment Variables
+Create `.env` files in each service directory based on their respective requirements (refer to `APPLICATION_OVERVIEW.md`).
 
-Run each backend service in a separate terminal:
+### 4. Start Backend Microservices
+Run each service in a separate terminal:
 
 ```bash
-cd backend/gateway
-npm install
-npm run dev
+# 1. API Gateway
+cd backend/gateway1 && npm install && npm run dev
+
+# 2. Auth Service
+cd backend/services/auth-service1 && npm install && npm run dev
+
+# 3. Resume Service (Includes Cover Letter & Career Coach)
+cd backend/services/resume-service1 && npm install && npm run dev
+
+# 4. Interview Service
+cd backend/services/interview-service1 && npm install && npm run dev
+
+# 5. Roadmap Service
+cd backend/services/roadmap-service1 && npm install && npm run dev
+
+# 6. Billing Service
+cd backend/services/billing-service1 && npm install && npm run dev
 ```
 
-```bash
-cd backend/services/auth
-npm install
-npm run dev
-```
-
-```bash
-cd backend/services/resume
-npm install
-npm run dev
-```
-
-```bash
-cd backend/services/interview
-npm install
-npm run dev
-```
-
-```bash
-cd backend/services/roadmap
-npm install
-npm run dev
-```
-
-```bash
-cd backend/services/billing
-npm install
-npm run dev
-```
-
-### 4. Start the frontend
-
+### 5. Start Frontend Client
 ```bash
 cd frontend
 npm install
-npm run dev -- --host
+npm run dev
 ```
+Open your browser at `http://localhost:5173`.
 
-Open the application in the browser:
+---
 
-```text
-http://localhost:5173
-```
+## 🔮 Future Planning & Product Roadmap
 
-## Default Service Ports
+Refer to [`future-planning.md`](file:///c:/Users/darsh/Downloads/Fresher_AI/future-planning.md) for complete details on upcoming milestones:
+- [x] **AI Career Coach Chatbot** *(Completed)*
+- [x] **AI Cover Letter Generator** *(Completed)*
+- [ ] **Skill Assessment Hub & MCQs:** Automated tests and coding challenges with domain benchmarking.
+- [ ] **Job Board Integration:** Live job feed recommendations based on candidate profile and resume score.
+- [ ] **Advanced Video Expression Analysis:** Camera-based facial confidence and eye-contact assessment during mock interviews.
+- [ ] **Campus / Placement Admin Portal:** Dedicated dashboards for college placement cells to track batch readiness.
 
-- Gateway: http://localhost:6000
-- Auth Service: http://localhost:6001
-- Resume Service: http://localhost:6002
-- Interview Service: http://localhost:6003
-- Roadmap Service: http://localhost:6004
-- Billing Service: http://localhost:6005
+---
 
-## Deployment Notes
-
-The project includes Docker-related setup files for containerized deployment. The backend is designed to run as multiple independent services, which makes it easier to deploy on cloud platforms such as AWS, Railway, Render, or Docker-based orchestration environments.
-
-## Benefits of FresherAI
-
-- Helps freshers prepare for job interviews with AI support
-- Reduces uncertainty in career planning
-- Creates a clearer path from resume creation to internship/job readiness
-- Improves interview confidence through structured practice
-- Gives actionable insights to help users improve faster
-- Merges multiple career tools into one unified platform
-
-## Future Enhancements
-
-Potential future improvements include:
-
-- advanced AI interview scoring models
-- multi-language support
-- recruiter dashboards
-- more detailed roadmap personalization
-- premium analytics reports
-- exportable resume templates
-- improved team and admin management
-
-## License
-
-This project is intended for educational and demonstration purposes. Please check the repository license before public distribution or commercial use.
+## 📄 License
+This project is developed for educational and career-readiness purposes. Check repository licenses for commercial or production distribution.
