@@ -6,13 +6,13 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
-COPY ./services/interview-service/package*.json ./services/interview-service/
-RUN cd services/interview-service && npm install
+COPY ./services/interview-service1/package*.json ./services/interview-service1/
+RUN cd services/interview-service1 && npm install
 
-COPY services/interview-service ./services/interview-service
+COPY services/interview-service1 ./services/interview-service1
 COPY shared ./shared
 
-WORKDIR /app/services/interview-service
+WORKDIR /app/services/interview-service1
 
 EXPOSE 8002
 

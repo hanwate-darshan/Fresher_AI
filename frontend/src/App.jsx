@@ -8,6 +8,8 @@ import Dashbord from "./pages/Dashbord";
 import Roadmap from "./pages/Roadmap";
 import Scorer from "./pages/Scorer";
 import JobFit from "./pages/JobFit";
+import CoverLetter from "./pages/CoverLetter";
+import CareerCoach from "./pages/CareerCoach";
 import ResumeBuilder from "./pages/ResumeBuilder";
 import Pricing from "./pages/Pricing";
 import InterviewStart from "./pages/InterviewStart";
@@ -153,6 +155,22 @@ function App() {
         element={
           user
             ? <Pricing user={user} setUser={setUser} />
+            : <Navigate to="/" replace />
+        }
+      />
+      <Route
+        path="/cover-letter"
+        element={
+          user
+            ? <CoverLetter setUser={setUser} />
+            : <Navigate to="/" replace />
+        }
+      />
+      <Route
+        path="/career-coach"
+        element={
+          user
+            ? <CareerCoach user={user} setUser={setUser} />
             : <Navigate to="/" replace />
         }
       />

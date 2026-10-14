@@ -6,13 +6,13 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
-COPY ./services/resume-service/package*.json ./services/resume-service/
-RUN cd services/resume-service && npm install
+COPY ./services/resume-service1/package*.json ./services/resume-service1/
+RUN cd services/resume-service1 && npm install
 
-COPY services/resume-service ./services/resume-service
+COPY services/resume-service1 ./services/resume-service1
 COPY shared ./shared
 
-WORKDIR /app/services/resume-service
+WORKDIR /app/services/resume-service1
 
 EXPOSE 8003
 

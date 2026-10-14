@@ -6,13 +6,13 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
-COPY ./gateway/package*.json ./gateway/
-RUN cd gateway && npm install
+COPY ./gateway1/package*.json ./gateway1/
+RUN cd gateway1 && npm install
 
-COPY gateway ./gateway
+COPY gateway1 ./gateway1
 COPY shared ./shared
 
-WORKDIR /app/gateway
+WORKDIR /app/gateway1
 
 EXPOSE 8000
 

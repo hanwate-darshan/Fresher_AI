@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from "motion/react";
 import { GiArtificialHive } from "react-icons/gi";
 import {
-  FiFileText, FiMap, FiStar, FiTarget,
+  FiFileText, FiMap, FiStar, FiTarget, FiEdit2,
   FiLogOut, FiPlus, FiSidebar,
 } from "react-icons/fi";
 import { BsStars, BsPlusCircleFill } from "react-icons/bs";
@@ -26,6 +26,16 @@ const NAV_ITEMS = [
     icon: <FiTarget size={15} />,
     label: "Job Fit",
     path: "/job-fit",
+  },
+  {
+    icon: <FiEdit2 size={15} />,
+    label: "Cover Letter",
+    path: "/cover-letter",
+  },
+  {
+    icon: <BsStars size={15} />,
+    label: "Career Coach",
+    path: "/career-coach",
   },
 ];
 

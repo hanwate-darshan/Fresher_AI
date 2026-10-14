@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "motion/react";
-import { FiMic, FiFileText, FiBarChart2, FiMap } from "react-icons/fi";
+import { FiMic, FiFileText, FiBarChart2, FiMap, FiTarget, FiEdit2 } from "react-icons/fi";
+import { BsStars } from "react-icons/bs";
 import { GiArtificialHive } from "react-icons/gi";
 import { LoginModal } from "../components/LoginModel";
 import img from "../assets/image.png"
@@ -122,7 +123,7 @@ export default function Home({ user, setUser }) {
 
       {/* ── AGENTS ── */}
       <section className="py-16 bg-[#F8F9FA]">
-        <div className="max-w-5xl mx-auto px-6">
+        <div className="max-w-6xl mx-auto px-6">
 
           <div className="text-center mb-10">
             <div className="inline-flex items-center px-3 py-1.5 rounded-full border border-black/15 bg-black/5 text-black/70 text-xs font-medium mb-4">
@@ -132,39 +133,54 @@ export default function Home({ user, setUser }) {
             <h2 className="text-2xl md:text-4xl font-extrabold tracking-tight text-[#0A0A0A] [text-shadow:0_4px_20px_rgba(0,0,0,0.1)]">
               Specialized Agents For
               <span className="block text-black/30">
-                Every Interview Stage
+                Every Interview & Career Stage
               </span>
             </h2>
 
             <p className="text-black/40 text-sm max-w-2xl mx-auto mt-4 leading-relaxed">
-              Fresher.AI combines multiple AI agents that work together
-              to help you build your resume, practice interviews,
-              receive detailed feedback, and follow a personalized roadmap
-              to land your dream job.
+              Fresher.AI combines multiple specialized AI agents that work together
+              to help you build your resume, match jobs, generate cover letters,
+              practice interviews, and get 24/7 personalized career guidance.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
             {[
               {
                 icon: <FiFileText />,
                 title: "Resume Agent",
-                desc: "Create ATS-friendly resumes, improve profile strength and maximize interview opportunities.",
+                badge: "ATS Scorer",
+                desc: "Create ATS-friendly resumes, optimize keywords, and boost profile strength to maximize shortlisting.",
+              },
+              {
+                icon: <FiTarget />,
+                title: "Job Fit Agent",
+                badge: "Gap Analysis",
+                desc: "Compare your resume against any job description with instant percentage match and skill gap breakdown.",
+              },
+              {
+                icon: <FiEdit2 />,
+                title: "Cover Letter Agent",
+                badge: "Instant AI",
+                desc: "Generate tailored, professional cover letters that naturally incorporate JD keywords and your achievements.",
               },
               {
                 icon: <FiMic />,
                 title: "Interview Agent",
-                desc: "Conduct realistic HR, Technical and Coding interviews with AI-powered simulations.",
-              },
-              {
-                icon: <FiBarChart2 />,
-                title: "Feedback Agent",
-                desc: "Get detailed answer analysis, scoring reports and improvement recommendations.",
+                badge: "Voice & Video",
+                desc: "Conduct realistic HR, Technical and Coding interviews with AI-powered simulations and speech recognition.",
               },
               {
                 icon: <FiMap />,
                 title: "Roadmap Agent",
-                desc: "Generate personalized learning roadmaps based on goals, skills and performance.",
+                badge: "Custom Path",
+                desc: "Generate personalized step-by-step learning roadmaps based on your target job, skills, and timeline.",
+              },
+              {
+                icon: <BsStars />,
+                title: "Career Coach Agent",
+                badge: "24/7 Mentor",
+                desc: "Get personalized 24/7 career advice, off-campus job search strategies, and fresher salary negotiation tips.",
               },
             ].map((agent, i) => (
               <motion.div
@@ -173,20 +189,27 @@ export default function Home({ user, setUser }) {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.45, delay: i * 0.08 }}
-                whileHover={{ y: -10, scale: 1.02 }}
-                className="group relative overflow-hidden bg-[#0A0A0A]/80 backdrop-blur-2xl border border-white/10 rounded-2xl p-5 shadow-[0_8px_32px_rgba(0,0,0,0.25)] hover:shadow-[0_16px_48px_rgba(0,0,0,0.4)] hover:border-white/20 transition-all"
+                whileHover={{ y: -8, scale: 1.02 }}
+                className="group relative overflow-hidden bg-[#0A0A0A]/90 backdrop-blur-2xl border border-white/10 rounded-2xl p-5 shadow-[0_8px_32px_rgba(0,0,0,0.25)] hover:shadow-[0_16px_48px_rgba(0,0,0,0.4)] hover:border-white/20 transition-all flex flex-col justify-between"
               >
                 {/* glass sheen */}
                 <div className="absolute inset-0 bg-gradient-to-br from-white/[0.08] via-transparent to-transparent pointer-events-none" />
                 {/* hover glow */}
-                <div className="absolute -top-10 -right-10 w-32 h-32 bg-white/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="absolute -top-10 -right-10 w-32 h-32 bg-white/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
                 <div className="relative">
-                  <div className="w-11 h-11 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 flex items-center justify-center text-white text-lg mb-4 shadow-inner">
-                    {agent.icon}
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 flex items-center justify-center text-white text-base shadow-inner group-hover:bg-white group-hover:text-[#0A0A0A] transition-all duration-300">
+                      {agent.icon}
+                    </div>
+                    {agent.badge && (
+                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-white/10 text-white/70 border border-white/10">
+                        {agent.badge}
+                      </span>
+                    )}
                   </div>
                   <h3 className="text-base font-bold mb-2 text-white">{agent.title}</h3>
-                  <p className="text-white/45 text-xs leading-relaxed">{agent.desc}</p>
+                  <p className="text-white/50 text-xs leading-relaxed">{agent.desc}</p>
                 </div>
               </motion.div>
             ))}

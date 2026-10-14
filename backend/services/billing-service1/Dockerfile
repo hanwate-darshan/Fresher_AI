@@ -6,13 +6,13 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
-COPY ./services/billing-service/package*.json ./services/billing-service/
-RUN cd services/billing-service && npm install
+COPY ./services/billing-service1/package*.json ./services/billing-service1/
+RUN cd services/billing-service1 && npm install
 
-COPY services/billing-service ./services/billing-service
+COPY services/billing-service1 ./services/billing-service1
 COPY shared ./shared
 
-WORKDIR /app/services/billing-service
+WORKDIR /app/services/billing-service1
 
 EXPOSE 8005
 

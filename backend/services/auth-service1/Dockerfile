@@ -6,13 +6,13 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
-COPY ./services/auth-service/package*.json ./services/auth-service/
-RUN cd services/auth-service && npm install
+COPY ./services/auth-service1/package*.json ./services/auth-service1/
+RUN cd services/auth-service1 && npm install
 
-COPY services/auth-service ./services/auth-service
+COPY services/auth-service1 ./services/auth-service1
 COPY shared ./shared
 
-WORKDIR /app/services/auth-service
+WORKDIR /app/services/auth-service1
 
 EXPOSE 8001
 
