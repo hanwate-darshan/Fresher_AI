@@ -23,10 +23,25 @@ export const chatWithCoach = async (req, res) => {
 
     // Load resume for context (optional — coach works even without resume)
     const resume = await Resume.findOne({ userId });
-    const resumeText = resume?.extractedText || "";
+    const userProfile = resume
+      ? {
+          name: resume.name || "",
+          skills: resume.skills || [],
+          missingSkills: resume.missingSkills || [],
+          suggestedRole: resume.suggestedRole || "",
+          score: resume.score || 0,
+          projects: resume.projects || [],
+          experience: resume.experience || [],
+          education: resume.education || [],
+          strengths: resume.strengths || [],
+          weaknesses: resume.weaknesses || [],
+          recommendations: resume.recommendations || [],
+          extractedText: resume.extractedText || "",
+        }
+      : null;
 
     const reply = await careerCoachAgent(
-      resumeText,
+      userProfile,
       message.trim(),
       chatHistory
     );

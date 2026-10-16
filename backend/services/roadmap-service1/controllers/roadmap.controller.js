@@ -9,7 +9,7 @@ export const generateRoadmap = async (req, res) => {
       role,
       targetPackage,
       useResume = false,
-      resume,
+      resume: reqResume,
     } = req.body;
 
     const userId = req.headers["x-user-id"];
@@ -21,11 +21,18 @@ export const generateRoadmap = async (req, res) => {
       });
     }
 
+    let resume = reqResume;
+
     if (useResume && !resume) {
-      return res.status(400).json({
-        success: false,
-        message: "Resume data is required.",
-      });
+      const cached = await redis.get(`resume:${userId}`);
+      if (cached) {
+        resume = JSON.parse(cached);
+      } else {
+        return res.status(400).json({
+          success: false,
+          message: "Resume data is required. Please upload your resume first or turn off the Resume option.",
+        });
+      }
     }
 
     const result = await graph.invoke({

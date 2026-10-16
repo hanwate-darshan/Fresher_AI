@@ -31,6 +31,266 @@ const PROMPT_SUGGESTIONS = [
   },
 ];
 
+function FormattedMessage({ text }) {
+  if (!text) return null;
+
+  const [checkedItems, setCheckedItems] = useState({});
+
+  const toggleCheck = (id) => {
+    setCheckedItems((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
+
+  const renderInline = (str) => {
+    if (!str) return "";
+    const parts = [];
+    const regex = /(\*\*.*?\*\*|`.*?`|\[HIGH\]|\[MEDIUM\]|\[LOW\])/g;
+    let lastIdx = 0;
+    let match;
+
+    while ((match = regex.exec(str)) !== null) {
+      if (match.index > lastIdx) {
+        parts.push(str.substring(lastIdx, match.index));
+      }
+      const token = match[0];
+      if (token.startsWith("**") && token.endsWith("**")) {
+        parts.push(
+          <strong key={match.index} className="font-semibold text-white">
+            {token.slice(2, -2)}
+          </strong>
+        );
+      } else if (token.startsWith("`") && token.endsWith("`")) {
+        parts.push(
+          <code key={match.index} className="px-1.5 py-0.5 rounded bg-white/10 text-emerald-300 font-mono text-[11px]">
+            {token.slice(1, -1)}
+          </code>
+        );
+      } else if (token === "[HIGH]") {
+        parts.push(
+          <span key={match.index} className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-extrabold bg-rose-500/20 text-rose-300 border border-rose-500/30 mr-1">
+            HIGH
+          </span>
+        );
+      } else if (token === "[MEDIUM]") {
+        parts.push(
+          <span key={match.index} className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-extrabold bg-amber-500/20 text-amber-300 border border-amber-500/30 mr-1">
+            MEDIUM
+          </span>
+        );
+      } else if (token === "[LOW]") {
+        parts.push(
+          <span key={match.index} className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-extrabold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 mr-1">
+            LOW
+          </span>
+        );
+      }
+      lastIdx = regex.lastIndex;
+    }
+    if (lastIdx < str.length) {
+      parts.push(str.substring(lastIdx));
+    }
+    return parts.length > 0 ? parts : str;
+  };
+
+  // Group raw lines into blocks: code, table, hr, checklist, line
+  const lines = text.split("\n");
+  const blocks = [];
+  let i = 0;
+
+  while (i < lines.length) {
+    const line = lines[i];
+    const trimmed = line.trim();
+
+    // Code block / Diagram
+    if (trimmed.startsWith("```")) {
+      const lang = trimmed.slice(3).trim();
+      const codeLines = [];
+      i++;
+      while (i < lines.length && !lines[i].trim().startsWith("```")) {
+        codeLines.push(lines[i]);
+        i++;
+      }
+      i++; // skip closing ```
+      blocks.push({ type: "code", lang, content: codeLines.join("\n") });
+      continue;
+    }
+
+    // Markdown Table
+    if (trimmed.startsWith("|") && trimmed.endsWith("|")) {
+      const tableLines = [];
+      while (i < lines.length && lines[i].trim().startsWith("|") && lines[i].trim().endsWith("|")) {
+        tableLines.push(lines[i].trim());
+        i++;
+      }
+      blocks.push({ type: "table", lines: tableLines });
+      continue;
+    }
+
+    // Horizontal Rule
+    if (trimmed === "---" || trimmed === "***" || trimmed === "___") {
+      blocks.push({ type: "hr" });
+      i++;
+      continue;
+    }
+
+    // Checkbox Item: - [ ] or - [x]
+    const checkMatch = trimmed.match(/^[-*]\s+\[([ xX])\]\s+(.*)/);
+    if (checkMatch) {
+      const isDefaultChecked = checkMatch[1].toLowerCase() === "x";
+      const itemText = checkMatch[2];
+      blocks.push({ type: "checklist", defaultChecked: isDefaultChecked, text: itemText, id: `chk_${i}` });
+      i++;
+      continue;
+    }
+
+    // Normal line
+    blocks.push({ type: "line", text: line });
+    i++;
+  }
+
+  return (
+    <div className="space-y-2 text-white/90 text-xs sm:text-sm leading-relaxed">
+      {blocks.map((block, idx) => {
+        if (block.type === "code") {
+          return (
+            <div key={idx} className="my-2 overflow-hidden rounded-xl border border-white/10 bg-black/60 shadow-inner">
+              {block.lang && (
+                <div className="flex items-center justify-between border-b border-white/10 bg-white/5 px-3 py-1 text-[10px] text-white/50 font-mono">
+                  <span>{block.lang}</span>
+                </div>
+              )}
+              <pre className="overflow-x-auto p-3 font-mono text-[11px] leading-relaxed text-emerald-300">
+                <code>{block.content}</code>
+              </pre>
+            </div>
+          );
+        }
+
+        if (block.type === "table") {
+          const rawRows = block.lines.map((l) =>
+            l.slice(1, -1).split("|").map((cell) => cell.trim())
+          );
+          if (rawRows.length === 0) return null;
+          const headers = rawRows[0];
+          const hasSeparator = rawRows.length > 1 && rawRows[1].every((c) => /^[-: ]+$/.test(c));
+          const dataRows = hasSeparator ? rawRows.slice(2) : rawRows.slice(1);
+
+          return (
+            <div key={idx} className="my-2.5 overflow-x-auto rounded-xl border border-white/10 bg-white/[0.02]">
+              <table className="w-full text-left text-xs border-collapse">
+                <thead>
+                  <tr className="border-b border-white/10 bg-white/5 text-white font-semibold">
+                    {headers.map((h, hIdx) => (
+                      <th key={hIdx} className="px-3 py-2 text-[11px]">
+                        {renderInline(h)}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-white/5">
+                  {dataRows.map((row, rIdx) => (
+                    <tr key={rIdx} className="hover:bg-white/[0.03] transition-colors">
+                      {row.map((cell, cIdx) => (
+                        <td key={cIdx} className="px-3 py-2 text-white/80 text-[11px] align-top">
+                          {renderInline(cell)}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          );
+        }
+
+        if (block.type === "hr") {
+          return <hr key={idx} className="my-2.5 border-white/10" />;
+        }
+
+        if (block.type === "checklist") {
+          const isChecked = checkedItems[block.id] !== undefined ? checkedItems[block.id] : block.defaultChecked;
+          return (
+            <div
+              key={idx}
+              onClick={() => toggleCheck(block.id)}
+              className="flex items-start gap-2.5 p-1.5 rounded-lg hover:bg-white/5 transition-colors cursor-pointer group select-none"
+            >
+              <div
+                className={`mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded border transition-all ${
+                  isChecked
+                    ? "bg-emerald-500 border-emerald-500 text-black shadow-sm"
+                    : "border-white/30 group-hover:border-white/60"
+                }`}
+              >
+                {isChecked && <FiCheck size={11} strokeWidth={3} />}
+              </div>
+              <span
+                className={`text-xs flex-1 transition-colors ${
+                  isChecked ? "line-through text-white/40" : "text-white/90"
+                }`}
+              >
+                {renderInline(block.text)}
+              </span>
+            </div>
+          );
+        }
+
+        const trimmed = block.text.trim();
+        if (!trimmed) {
+          return <div key={idx} className="h-1" />;
+        }
+
+        if (trimmed.startsWith("### ")) {
+          return (
+            <h4 key={idx} className="text-sm sm:text-base font-bold text-white pt-2 pb-0.5 border-b border-white/10">
+              {renderInline(trimmed.replace(/^###\s+/, ""))}
+            </h4>
+          );
+        }
+        if (trimmed.startsWith("## ")) {
+          return (
+            <h3 key={idx} className="text-base sm:text-lg font-extrabold text-white pt-2.5 pb-1 border-b border-white/10">
+              {renderInline(trimmed.replace(/^##\s+/, ""))}
+            </h3>
+          );
+        }
+
+        if (trimmed.startsWith("- ") || trimmed.startsWith("* ")) {
+          return (
+            <div key={idx} className="flex items-start gap-2 pl-1.5">
+              <span className="text-emerald-400 mt-1 text-xs shrink-0">•</span>
+              <span className="flex-1">{renderInline(trimmed.replace(/^[-*]\s+/, ""))}</span>
+            </div>
+          );
+        }
+
+        const numMatch = trimmed.match(/^(\d+)\.\s+(.*)/);
+        if (numMatch) {
+          return (
+            <div key={idx} className="flex items-start gap-2 pl-1.5">
+              <span className="font-bold text-emerald-400 text-xs shrink-0">{numMatch[1]}.</span>
+              <span className="flex-1">{renderInline(numMatch[2])}</span>
+            </div>
+          );
+        }
+
+        if (trimmed.startsWith("> ")) {
+          return (
+            <div key={idx} className="border-l-2 border-emerald-400 bg-white/5 pl-3 py-1.5 rounded-r my-1 text-white/80 italic text-xs">
+              {renderInline(trimmed.replace(/^>\s+/, ""))}
+            </div>
+          );
+        }
+
+        return (
+          <p key={idx} className="text-white/90">
+            {renderInline(trimmed)}
+          </p>
+        );
+      })}
+    </div>
+  );
+}
+
 export default function CareerCoach({ user }) {
   const navigate = useNavigate();
   const [messages, setMessages] = useState([
@@ -273,7 +533,13 @@ export default function CareerCoach({ user }) {
                     <div className="absolute inset-0 bg-gradient-to-br from-white/[0.08] via-transparent to-transparent pointer-events-none" />
                   )}
 
-                  <div className="relative whitespace-pre-wrap">{msg.content}</div>
+                  {isUser ? (
+                    <div className="relative whitespace-pre-wrap">{msg.content}</div>
+                  ) : (
+                    <div className="relative">
+                      <FormattedMessage text={msg.content} />
+                    </div>
+                  )}
 
                   <div
                     className={`relative mt-2 flex items-center justify-between text-[10px] ${

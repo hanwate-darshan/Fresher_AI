@@ -61,9 +61,20 @@ export default function ATSTemplate({ data }) {
                 </h1>
                 {/* Contact row */}
                 <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", fontSize: "10.5px", color: "#000", gap: "0" }}>
-                    {[email, phone, location,
-                        linkedin ? `linkedin.com/in/${linkedin}` : null,
-                        github ? `github.com/${github}` : null,
+                    {[
+                        email,
+                        phone,
+                        location,
+                        linkedin
+                            ? (linkedin.includes("linkedin.com")
+                                ? linkedin.trim().replace(/^https?:\/\/(www\.)?/i, "")
+                                : `linkedin.com/in/${linkedin.trim().replace(/^\/+/, "")}`)
+                            : null,
+                        github
+                            ? (github.includes("github.com")
+                                ? github.trim().replace(/^https?:\/\/(www\.)?/i, "")
+                                : `github.com/${github.trim().replace(/^\/+/, "")}`)
+                            : null,
                     ].filter(Boolean).map((item, i, arr) => (
                         <span key={i} style={{ whiteSpace: "nowrap" }}>
                             {item}

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { motion, AnimatePresence } from "motion/react";
 import {
   FiSend, FiFileText, FiClock,
@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom";
 import RoadmapResult from "../components/roadmap/RoadmapResult";
 import api from "../utils/axios";
 import { useCoins } from "../api/user.api";
+import { setResume } from "../redux/resumeSlice";
+import { getResume } from "../api/resume.api";
 
 
 
@@ -57,12 +59,18 @@ export default function Roadmap({setUser}) {
   const [history, setHistory]         = useState([]);
   const [error, setError]             = useState("");
 
+  const dispatch = useDispatch();
   const {resume} = useSelector((state) => state.resume);
   const navigate = useNavigate();
 
   useEffect(() => {
-  getRoadmaps();
-}, []);
+    getRoadmaps();
+    if (!resume) {
+      getResume().then((res) => {
+        if (res?.data) dispatch(setResume(res.data));
+      });
+    }
+  }, []);
 
 
 const getRoadmaps = async () => {
@@ -96,6 +104,12 @@ const getRoadmapById = async (id) => {
   // ── Generate a new roadmap ──
   async function handleGenerate() {
     if (!role.trim() || loading) return;
+
+    if (useResume && !resume) {
+      setError("Resume data not found. Please upload a resume first or disable the 'Resume' toggle to continue.");
+      return;
+    }
+
     setLoading(true);
     setError("");
     try {
@@ -118,7 +132,8 @@ const getRoadmapById = async (id) => {
       getRoadmaps();
     } catch (err) {
       console.error("Failed to generate roadmap:", err);
-      setError("Something went wrong while generating your roadmap. Please try again.");
+      const msg = err.response?.data?.message || "Something went wrong while generating your roadmap. Please try again.";
+      setError(msg);
     } finally {
       setLoading(false);
     }
@@ -324,12 +339,18 @@ const getRoadmapById = async (id) => {
             <motion.button
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
-              onClick={() => setUseResume(!useResume)}
+              onClick={() => {
+                if (!resume && !useResume) {
+                  alert("No resume found. Please upload a resume first in 'Create Interview' or 'Resume Analyzer' to generate a personalized roadmap.");
+                  return;
+                }
+                setUseResume(!useResume);
+              }}
               type="button"
-             className={`flex items-center text-xs gap-1 px-2 py-2 rounded-xl ${
+             className={`flex items-center text-xs gap-1 px-2 py-2 rounded-xl transition-all ${
   useResume
     ? "bg-emerald-500/10 text-emerald-400"
-    : "bg-white/5 text-white/60"
+    : "bg-white/5 text-white/60 hover:text-white"
 }`}
             >
               {useResume ? (
